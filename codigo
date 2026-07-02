@@ -1,0 +1,28 @@
+!pip install diffusers transformers
+
+from diffusers import StableDiffusionPipeline
+import torch
+import time
+
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    torch_dtype=torch.float16
+)
+pipe = pipe.to("cuda")
+
+prompt = "two friends playing in the park"
+
+# Início da contagem do tempo
+inicio = time.time()
+
+# Geração da imagem
+image = pipe(prompt).images[0]
+
+# Fim da contagem do tempo
+fim = time.time()
+
+image.save("generated_image.png")
+image.show()
+
+# Exibe o tempo de execução
+print(f"Tempo de geração da imagem: {fim - inicio:.2f} segundos")
